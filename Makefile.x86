@@ -1,0 +1,32 @@
+#
+# Makefile for zeusclient
+#
+# Sabri Berisha <sabri@cluecentral.net>
+
+srcdir = .
+
+
+CC		= gcc
+OBJS		= zeusclient.o process_request.o base64.o mylog.o io.o \
+		  bypass_filter.o
+SRCS		= zeusclient.c process_request.c base64.c mylog.c io.c \
+		  bypass_filter.c
+PROG		= zeusclient
+
+WARNS           =-ansi -W -Wall -Wno-unused -Wformat -Wshadow
+CFLAGS          = $(WARNS) -DCONFDIR=\"${sysconfdir}\" -D_GNU_SOURCE -DHAVE_CONFIG_H  -D__FREEBSD__ -D__BSD__ -g -O2 -pthread
+LDFLAGS         = -lpthread
+RANLIB          = @RANLIB@
+INSTALL         = /usr/bin/install -c
+RM              = rm -f
+LN              = ln -s
+
+all: $(PROG)
+
+clean:
+	        $(RM) *core *.o *~ $(PROG)
+
+$(PROG): $(OBJS)
+	        $(CC) $(CFLAGS) -o $@ $(OBJS) $(LDFLAGS);
+
+

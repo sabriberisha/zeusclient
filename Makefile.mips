@@ -1,0 +1,42 @@
+#
+# Makefile for zeusclient
+#
+# Sabri Berisha <sabri@cluecentral.net>
+
+srcdir = .
+
+
+build_triplet = x86_64-unknown-linux-gnu
+host_triplet = mips-unknown-linux-gnu
+target_triplet = mips-unknown-linux-gnu
+
+CC=/home/sabri/codebase/openwrt/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-5.3.0_musl-1.1.14/bin/mipsel-openwrt-linux-musl-gcc
+GCC=/home/sabri/codebase/openwrt/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-5.3.0_musl-1.1.14/bin/mipsel-openwrt-linux-musl-gcc
+STAGING_DIR=/home/sabri/codebase/openwrt/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-5.3.0_musl-1.1.14
+export STAGING_DIR=/home/sabri/codebase/openwrt/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-5.3.0_musl-1.1.14
+
+
+#CC		= gcc
+OBJS		= zeusclient.o process_request.o base64.o mylog.o io.o \
+		  bypass_filter.o
+SRCS		= zeusclient.c process_request.c base64.c mylog.c io.c \
+		  bypass_filter.c
+PROG		= zeusclient
+
+WARNS           =-ansi -W -Wall -Wno-unused -Wformat -Wshadow
+CFLAGS          = $(WARNS) -DCONFDIR=\"${sysconfdir}\" -D_GNU_SOURCE -DHAVE_CONFIG_H  -D__FREEBSD__ -D__BSD__ -g -O2 -pthread
+LDFLAGS         = -lpthread
+RANLIB          = @RANLIB@
+INSTALL         = /usr/bin/install -c
+RM              = rm -f
+LN              = ln -s
+
+all: $(PROG)
+
+clean:
+	        $(RM) *core *.o *~ $(PROG)
+
+$(PROG): $(OBJS)
+	        $(CC) $(CFLAGS) -o $@ $(OBJS) $(LDFLAGS);
+
+

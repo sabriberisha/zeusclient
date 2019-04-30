@@ -1,0 +1,16 @@
+#!/bin/sh
+if [ "$1" = "x86" ]
+then
+  rm Makefile
+  ln -s Makefile.x86 Makefile
+  echo "Switched to x86."
+  exit
+fi
+if [ "$1" = "mips" ]
+then
+  rm Makefile
+  ln -s Makefile.mips Makefile
+  echo "Switched to MIPS."
+  exit
+fi
+echo "Insufficient arguments."
